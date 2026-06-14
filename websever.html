@@ -33,7 +33,7 @@ http://localhost/index.html
 127.0.0.1 GET / 200
 127.0.0.1 GET /test.html 404
 
-more C:\Apache24\logs\access.log
+c
 
 Step 2: Browser → Tomcat
 =========================
@@ -199,6 +199,16 @@ PASS / FAIL
 Apache HTTPD  : 80 (used)
 Tomcat        : 8080(used)
 Jenkins       : 8081(available)
+http://localhost:8081/
+1.Source Code Management
+git
+https://github.com/sughunesh/neaapp.git
+
+2.Build Steps
+a.Maven-3.9
+Goals clean package
+b.Execute Windows batch command
+copy /Y "%WORKSPACE%\target\neapps.war" "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps\"
 
 
 
