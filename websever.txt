@@ -1,0 +1,204 @@
++---------+
+| Browser |
++---------+
+     |
+     | HTTP Request
+     v
++------------------+
+| Apache HTTPD     |
+| Port 80 / 443    |
++------------------+
+     |
+     | Proxy Request
+     v
++------------------+
+| Tomcat           |
+| Port 8080        |
++------------------+
+     |
+     | Execute Servlet/JSP
+     v
++------------------+
+| Java Application |
++------------------+
+
+Step 1: Browser → Apache HTTPD
+==============================
+F12-> Network Tab
+Create a 404 Test
+http://localhost/test.html
+Create 200 Test
+http://localhost/index.html
+
+127.0.0.1 GET / 200
+127.0.0.1 GET /test.html 404
+
+more C:\Apache24\logs\access.log
+
+Step 2: Browser → Tomcat
+=========================
+Tomcat Web application:
+more "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps\hello\hello.jsp"
+http://localhost:8080/hello/hello.jsp
+
+Question 1
+
+Which server is serving the page?
+
+Question 2
+
+Which page changes when refreshed?
+
+Question 3
+
+Why does the JSP page show a new timestamp?
+
+Question 4
+
+Can Apache HTTPD execute:
+
+Step 3: Apache HTTPD → Tomcat reverse proxy
+===========================================
+
+notepad.exe C:\Apache24\conf\httpd.conf
+<VirtualHost *:80>
+    ServerName localhost
+
+    ErrorLog logs/proxy_error.log
+   CustomLog logs/proxy_access.log common
+
+   ProxyRequests Off
+   ProxyPassReverse "/" "http://127.0.0.1:8080/hello"
+   ProxyPreserveHost On    ProxyPass "/" "http://127.0.0.1:8080/hello"
+   
+</VirtualHost>
+
+curl localhost:80
+curl localhost:80/hello
+curl localhost:80/hello/hello.jsp
+curl localhost:8080/hello/hello.jsp
+type c:\Apache24\logs\access.log
+
+Stop Tomcat:
+http://localhost/hello/hello.jsp
+
+502 Bad Gateway or 503 Service Unavailable
+
+Step 4: Build and Deploy a WAR File
+=====================================
+Developer
+   ↓
+Build WAR
+   ↓
+Tomcat Deploys WAR
+   ↓
+Apache
+   ↓
+Browser
+
+ie.,
+
+Developer
+   ↓
+Maven Project
+   ↓
+mvn package
+   ↓
+WAR File
+   ↓
+Tomcat
+
+
+HelloWebApp
+│
+├── pom.xml
+│
+└── src
+    └── main
+        ├── java
+        ├── resources
+        └── webapp
+            ├── WEB-INF
+            │    └── web.xml
+            │
+            └── index.jsp
+
+src/main/webapp/index.jsp
+<html>
+<body>
+
+<h1>HTTPD + Tomcat Learning Lab</h1>
+
+<p>Hello from Maven WebApp</p>
+
+<p>Current Time:
+<%= new java.util.Date() %>
+</p>
+
+</body>
+</html>
+
+
+mvn clean package
+
+cp C:\Users\sughu\IdeaProjects\neapps\target\neapps.war "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps"
+
+✓ HTTP Request/Response
+✓ Apache HTTPD
+✓ Tomcat
+✓ JSP
+✓ Access Logs
+✓ Proxy Logs
+✓ Maven
+✓ WAR Packaging
+✓ WAR Deployment
+
+
+src/main/webapp/health.jsp
+<html>
+<body>
+
+STATUS=UP
+
+</body>
+</html>
+src/main/webapp/version.jsp
+Application Version 1.0
+
+
+Step 5: Install Jenkins, connect it to your Maven project, and automate the WAR build and deployment.
+=========================================================================================================
+Current state:
+
+Developer
+   ↓
+IntelliJ
+   ↓
+Maven
+   ↓
+WAR
+   ↓
+Tomcat
+
+Target state:
+
+Developer
+   ↓
+Git
+   ↓
+Jenkins
+   ↓
+mvn clean package
+   ↓
+Deploy WAR
+   ↓
+Smoke Test
+   ↓
+PASS / FAIL
+
+Apache HTTPD  : 80 (used)
+Tomcat        : 8080(used)
+Jenkins       : 8081(available)
+
+
+
