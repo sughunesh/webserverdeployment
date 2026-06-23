@@ -1,1 +1,18 @@
 
+docker ps
+docker pull mcr.microsoft.com/windows/servercore:ltsc2022
+docker images
+docker run -d --name java-builder mcr.microsoft.com/windows/servercore:ltsc2022 
+docker stop java-builder
+docker start java-builder
+docker inspect mcr.microsoft.com/windows/serverdocker stop webserver-java-tomcat
+docker rm java-builder
+docker run -d --name java-builder mcr.microsoft.com/windows/servercore:ltsc2022
+docker ps
+docker stop java-builder
+docker cp "C:\Program Files\java\jdk-25" jadocker stop java-builder
+docker start java-builder
+docker exec -it java-builder cmd
+setx JAVA_HOME "C:\java" /M
+setx PATH "%PATH%;C:\java\bin" /M
+
