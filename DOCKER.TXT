@@ -15,4 +15,12 @@ docker start java-builder
 docker exec -it java-builder cmd
 setx JAVA_HOME "C:\java" /M
 setx PATH "%PATH%;C:\java\bin" /M
+exit
+docker exec -it java-builder cmd
+java -version
+docker stop java-builder
+docker cp C:\Apache24 java-builder:C:\Apache24
+docker start java-builder
+docker exec -it java-builder cmd
 
+docker stop java-builder
