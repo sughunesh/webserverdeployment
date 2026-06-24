@@ -1,0 +1,22 @@
+Need Duplicates?
+    YES -> List
+
+Need Unique Values?
+    YES -> Set
+
+Need Key -> Value?
+    YES -> Map
+List
+ArrayList  -> Fast Read
+LinkedList -> Fast Insert/Delete
+Set
+HashSet       -> Unique
+LinkedHashSet -> Unique + Order
+TreeSet       -> Unique + Sorted
+Map
+HashMap       -> Fast
+LinkedHashMap -> Order
+TreeMap       -> Sorted Keys
+Sorting
+Comparable -> One Default Sort
+Comparator -> Multiple Sort Rules
